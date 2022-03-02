@@ -1,0 +1,75 @@
+CREATE TABLE tb_NotaServico(
+    ID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    Name VARCHAR(45) NOT NULL
+);
+
+insert into tb_NotaServico values(1,"Reclamação de Facturação");
+insert into tb_NotaServico values(2,"Reclamação de  Produto");
+insert into tb_NotaServico values(3,"Reclamação de  Serviço");
+insert into tb_NotaServico values(4,"Registo de  Solicitação");
+
+
+CREATE TABLE tb_Avalia(
+    ID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    Name VARCHAR(45) NOT NULL
+);
+
+insert into tb_Avalia values(1,"MUITO MAU");
+insert into tb_Avalia values(2,"MAU");
+insert into tb_Avalia values(3,"MUITO BOM");
+insert into tb_Avalia values(4,"BOM");
+
+
+
+
+
+CREATE TABLE tb_questoes(
+    ID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    Name VARCHAR(45) NOT NULL,
+    FK_notaServico_id INT(11) NOT NULL,
+    FOREIGN KEY (FK_notaServico_id) REFERENCES tb_NotaServico(Id)
+   
+);
+
+insert into tb_questoes values(1,"Tem Agua Canalizada da AdeM?",1);
+insert into tb_questoes values(2,"Tem contador operacional na sua instalação?",1);
+insert into tb_questoes values(3,"Tem recebido facturas regularmente? ",1);
+insert into tb_questoes values(4,"A mesma é deixada na sua casa?",1);
+insert into tb_questoes values(5,"O valor facturado, tem coerência com a leitura registada no seu contador?",1);
+insert into tb_questoes values(6,"O colaborador que deixa a factura, em caso de alguma dúvida, tem conseguido esclarecer?",1);
+insert into tb_questoes values(7,"Quando reporta alguma anomalia, a resposta tem sido rápida?",4);
+insert into tb_questoes values(8,"De um modo geral, como avalia a qualidade do atendimento ao cliente realizado pelo atendedor na loja?",1)
+
+
+
+
+CREATE TABLE tb_questionar(
+    ID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    ParceiroSessao INT  NOT NULL,
+    FK_questao_id INT NOT NULL,
+    FOREIGN KEY (FK_questao_id) REFERENCES tb_questoes(Id)
+);
+
+insert into tb_questionar values(1,10000020200,1);
+insert into tb_questionar values(2,10000020200,2);
+insert into tb_questionar values(3,10000020200,3);
+insert into tb_questionar values(4,10000020200,4);
+insert into tb_questionar values(5,10000020200,5);
+insert into tb_questionar values(6,10000020200,6);
+insert into tb_questionar values(7,10000020200,7);
+insert into tb_questionar values(8,10000020200,7);
+
+
+
+Create view  resulQuestionar as (
+SELECT
+q.ParceiroSessao as "Parceiro de negocio",
+u.name as "Questão"
+FROM tb_questionar q
+INNER JOIN tb_questoes u ON u.id=q.id
+);
+
+
+
+
+
